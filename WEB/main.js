@@ -1,22 +1,3 @@
-/* INSCRIPTION
-- Récuperer la valeur du nom d'utilisateur, du mot de passe et de la confirmation du mot de passe
-- Vérifier dans l'ordre :
-    -> Si les mots de passe correspondent
-    -> Si le mot de passe est correct, regex : /((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\W]).{8,64})/
-    -> Si le nom d'utilisateur est correct, regex : /.{4,16}/
-- Fetch l'api
-
-Si il y a une erreur, l'afficher dans la console ET l'afficher sur l'écran de l'utilisateur
-
-Format des variables :
-    - Constante : VARIABLE_VARIABLE
-    - Variable : variableVariable
-
-Constantes :
-USERNAME_PATTERN
-PASSWORD_PATTERN
-*/
-
 const inscriptionButton = document.getElementById('buttonInscription');
 
 if (inscriptionButton) {

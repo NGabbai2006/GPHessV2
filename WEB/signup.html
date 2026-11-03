@@ -1,60 +1,29 @@
-<!--  
-LA PAGE D'INSCRIPTION
-
-C'est la page où l'utilisateur peut créer un compte
-
-Obligations :
-    Nom d'utilisateur :
-        - Minimum 2 caractères, maximum 16 caractères
-        - Les caractères peuvent être : a-z, A-Z, 0-9
-    Mot de passe :
-        - Minimum 8 caractères, maximum 64? caractères caractères
-        - Doit au moins contenir une lettre
-        - Doit au moins contenir un chiffre
-        - Doit au moins contenir un symbole
-
-La page doivent contenir : 
-            - 1 input pour le nom d'utilisateur
-            - 1 input pour le mot de passe
-            - 1 bouton pour valider
-            - 1 élément de type 'a' qui a pour href ./login.html
--->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projet-1 Longa & Sturm</title>
+    <title>GPHessV2</title>
     <link href="style.css" rel="stylesheet">
-
 </head>
 
 <body>
-
     <h1>GPhess</h1>
-
     <div id="center">
-
         <h2>Inscription</h2>
-
         <div>
             <input id="idInscription" type="text" placeholder="Identifiant">
         </div>
-
         <div>
             <input id="idPassword" type="password" placeholder="Mot de passe">
         </div>
-
          <div>
             <input id="confirmation" type="password" placeholder="Confirmer le mot de passe">
         </div>
-
         <button id="buttonInscription">S'inscrire</button> <a href="login">Déjà un compte ?</a>
         <p id="error"></p>
     </div>
 
     <script src="main.js"></script>
-
 </body>
 </html>

@@ -16,7 +16,7 @@ const PORT = 8000;
 const USERNAME_PATTERN = /^.{4,16}$/;
 const PASSWORD_PATTERN = /^((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\W]).{8,64})$/;
 
-app.use(express.static(__dirname + 'WEB'));
+app.use(express.static(__dirname + 'public'));
 app.use(cors());
 app.use(express.json());
 

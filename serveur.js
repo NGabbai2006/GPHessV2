@@ -7,8 +7,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-const { SerialPort } = require('serialport');
-
 const app = express();
 
 const PORT = 8000; 
@@ -16,7 +14,7 @@ const PORT = 8000;
 const USERNAME_PATTERN = /^.{4,16}$/;
 const PASSWORD_PATTERN = /^((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\W]).{8,64})$/;
 
-app.use(express.static(__dirname + 'public'));
+app.use(express.static(__dirname + '/public'));
 app.use(cors());
 app.use(express.json());
 
@@ -67,6 +65,10 @@ app.get('/script/main.js', (req, res) => { res.sendFile("main.js", { root: path.
 app.get('/script/connexion.js', (req, res) => { res.sendFile("connexion.js", { root: path.join(__dirname, "public", "script") }); });
 app.get('/script/inscription.js', (req, res) => { res.sendFile("inscription.js", { root: path.join(__dirname, "public", "script") }); });
 app.get('/script/trames.js', (req, res) => { res.sendFile("trames.js", { root: path.join(__dirname, "public", "script") }); });
+app.get('/script/map.js', (req, res) => { res.sendFile("map.js", { root: path.join(__dirname, "public", "script") }); });
+
+app.get('/leaflet/leaflet.css', (req, res) => { res.sendFile("leaflet.css", { root: path.join(__dirname, "public", "leaflet") }); });
+
 
 
 app.post('/api/inscription', (req, res) => {

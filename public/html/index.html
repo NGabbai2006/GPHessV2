@@ -1,57 +1,17 @@
 <!DOCTYPE html>
-<html lang="fr">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GPHessV2</title>
     <link href="../style/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../leaflet/leaflet.css" integrity="sha256-RwBOaSN3kFqUIUAZaMmmo5grrEMRXwBCe0sCRJgqydk=" crossorigin=""/>
+	<script type="importmap">{ "imports": { "leaflet": "../leaflet/leaflet.js" } }</script>
 </head>
-
 <body>
-    <!-- Affiché si on n'est PAS connecté -->
-    <div id="visiteur">
-        <button><a href="login">login</a></button>
-        <button><a href="signup">signup</a></button>
-    </div>
+    <h1>GPHess</h1>
+    <div id="map"></div>
 
-    <!-- Affiché si on est connecté -->
-    <div id="connecte" hidden>
-        <h1>Bienvenue <span id="nomUtilisateur"></span></h1>
-        <button id="logoutButton">Déconnexion</button>
-
-        <h2>Changer de nom d'utilisateur</h2>
-        <input type="text" id="newUsername" placeholder="Nouveau nom">
-        <button id="changeUserButton">Changer</button>
-
-        <h2>Changer de mot de passe</h2>
-        <input type="password" id="oldPassword" placeholder="Ancien mot de passe">
-        <input type="password" id="newPassword" placeholder="Nouveau mot de passe">
-        <button id="changePasswordButton">Changer</button>
-
-        <h2>Supprimer le compte</h2>
-        <button id="deleteButton">Supprimer mon compte</button>
-
-        <p id="message"></p>
-        <h2>Liste des utilisateurs</h2>
-        <ul id="listeUtilisateurs"></ul>
-    </div>
-
-    <button id="ws">ws</button>
-    <script>
-        const ws = new WebSocket('ws://localhost:8080');
-        ws.onopen = () => {
-            console.log('opened');
-        };
-        ws.onmessage = (m) => {
-            console.log(m);
-        };
-        document.getElementById('ws').addEventListener('click', () => {
-            ws.send('testclient');
-        })
-    </script>
-
-    <script src="../script/main.js"></script>
+    <script type="module" src="../script/map.js"></script>
 </body>
-
 </html>

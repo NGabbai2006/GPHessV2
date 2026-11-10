@@ -69,7 +69,7 @@ app.get('/script/inscription.js', (req, res) => { res.sendFile("main.js", { root
 app.get('/script/trames.js', (req, res) => { res.sendFile("main.js", { root: path.join(__dirname, "public", "script") }); });
 
 
-app.post('/api/signup', (req, res) => {
+app.post('/api/inscription', (req, res) => {
 	bdd.query("SELECT * FROM users WHERE username = ?;", [req.body.username], (err, results) => {
 		if (err) { console.log(err); return res.status(500).json({ error: err.message }) }
 

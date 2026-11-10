@@ -24,7 +24,8 @@ if (inscriptionButton) {
             return;
         }
 
-        fetch('/api/signup', {
+        console.log("fetched");
+        fetch('/api/inscription', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ "username": username, "password": password })

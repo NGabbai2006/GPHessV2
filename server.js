@@ -35,13 +35,13 @@ bdd.connect((err) => {
 
 
 app.get('/', (req, res) => {
-	res.sendFile("index.html", { root: path.join(__dirname, "WEB") });
+	res.sendFile("index.html", { root: path.join(__dirname, "public", "html") });
 });
 app.get('/login', (req, res) => {
-	res.sendFile("login.html", { root: path.join(__dirname, "WEB") });
+	res.sendFile("login.html", { root: path.join(__dirname, "public", "html") });
 });
 app.get('/signup', (req, res) => {
-	res.sendFile("signup.html", { root: path.join(__dirname, "WEB") });
+	res.sendFile("signup.html", { root: path.join(__dirname, "public", "html") });
 });
 
 function verifierToken(req, res, next) {
@@ -61,8 +61,12 @@ function verifierToken(req, res, next) {
 	});
 }
 
-app.get('/style.css', (req, res) => { res.sendFile("style.css", { root: path.join(__dirname, "WEB") }); });
-app.get('/main.js', (req, res) => { res.sendFile("main.js", { root: path.join(__dirname, "WEB") }); });
+app.get('/style/style.css', (req, res) => { res.sendFile("style.css", { root: path.join(__dirname, "public", "style") }); });
+
+app.get('/script/main.js', (req, res) => { res.sendFile("main.js", { root: path.join(__dirname, "public", "script") }); });
+app.get('/script/connexion.js', (req, res) => { res.sendFile("main.js", { root: path.join(__dirname, "public", "script") }); });
+app.get('/script/inscription.js', (req, res) => { res.sendFile("main.js", { root: path.join(__dirname, "public", "script") }); });
+app.get('/script/trames.js', (req, res) => { res.sendFile("main.js", { root: path.join(__dirname, "public", "script") }); });
 
 
 app.post('/api/signup', (req, res) => {
@@ -207,3 +211,20 @@ app.listen(PORT, () => {
 	console.log(`Le serveur est en écoute sur le port ${PORT}`);
 });
 
+
+
+const WebSocket = require('ws');
+const wss = new WebSocket.Server({ port: 8080 });
+
+wss.on('connection', (ws) => {
+	ws.send('test');
+
+	ws.on('message', (m) => {
+		console.log(m);
+		ws.send('test');
+	})
+
+	ws.on('close', () => {
+		console.log('closed');
+	})
+})

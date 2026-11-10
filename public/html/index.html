@@ -37,6 +37,20 @@
         <ul id="listeUtilisateurs"></ul>
     </div>
 
+    <button id="ws">ws</button>
+    <script>
+        const ws = new WebSocket('ws://localhost:8080');
+        ws.onopen = () => {
+            console.log('opened');
+        };
+        ws.onmessage = (m) => {
+            console.log(m);
+        };
+        document.getElementById('ws').addEventListener('click', () => {
+            ws.send('testclient');
+        })
+    </script>
+
     <script src="../script/main.js"></script>
 </body>
 

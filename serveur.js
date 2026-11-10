@@ -31,8 +31,8 @@ bdd.connect((err) => {
 }); 
 
 app.get('/', (req, res) => { res.sendFile("index.html", { root: path.join(__dirname, "public", "html") }); });
-app.get('/login', (req, res) => { res.sendFile("connexion.html", { root: path.join(__dirname, "public", "html") }); });
-app.get('/signup', (req, res) => { res.sendFile("inscription.html", { root: path.join(__dirname, "public", "html") }); });
+app.get('/connexion', (req, res) => { res.sendFile("connexion.html", { root: path.join(__dirname, "public", "html") }); });
+app.get('/inscription', (req, res) => { res.sendFile("inscription.html", { root: path.join(__dirname, "public", "html") }); });
 app.get('/parametres', (req, res) => { res.sendFile("parametres.html", { root: path.join(__dirname, "public", "html") }); });
 
 app.get('/style/style.css', (req, res) => { res.sendFile("style.css", { root: path.join(__dirname, "public", "style") }); });

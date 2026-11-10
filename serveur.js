@@ -67,14 +67,14 @@ app.post('/api/inscription', (req, res) => {
     if (!REGEX_USERNAME.test(req.body.username)) return res.json({ "message": "Username invalide" });
     if (!REGEX_PASSWORD.test(req.body.password)) return res.json({ "message": "Mot de passe invalide" });
 
-    bdd.query("SELECT * FROM users WHERE username = ?;", [req.body.username], (err, results => {
+    bdd.query("SELECT * FROM users WHERE login = ?;", [req.body.username], (err, results => {
         if (err) return res.status(500).json({ erreur: err.message });
         if (results.length > 0) { return res.json({ "message" : "Utilisateur déjà pris" }) };
 
         bcrypt.hash(req.body.password, process.env.BCRYPT_HASH, (err, password) => {
             if (err) return res.status(500).json({ erreur: err.message });
             
-            bdd.query("INSERT INTO users (username, password) VALUES (?, ?);", [req.body.username, password], (err, results) => {
+            bdd.query("INSERT INTO users (login, password) VALUES (?, ?);", [req.body.username, password], (err, results) => {
                 if (err) return res.status(500).json({ erreur: err.message });
 
                 return res.json({ "message" : "Compte créé" });
@@ -84,7 +84,7 @@ app.post('/api/inscription', (req, res) => {
 })
 
 app.post('/api/connexion', (req, res) => {
-    bdd.query("SELECT * FROM users WHERE username = ?;", [req.body.username], (err, results) => {
+    bdd.query("SELECT * FROM users WHERE login = ?;", [req.body.username], (err, results) => {
         if (err) return res.status(500).json({ erreur: err.message });
         if (results.length == 0) return res.status(401).json({ erreur: "Utilisateur introuvable"});
 
@@ -108,11 +108,11 @@ app.post('/api/changeuser', verifToken, (req, res) => {
 
     if (!REGEX_USERNAME.test(newUsername)) return res.status(400).json({ erreur: "Nouveau mot de passe invalide" });
 
-    bdd.query("SELECT id FROM users WHERE username = ?;", [newUsername], (err, results) => {
+    bdd.query("SELECT id FROM users WHERE login = ?;", [newUsername], (err, results) => {
             if (err) return res.status(500).json({ error: err.message });
             if (results.length > 0) return res.status(400).json({ error: "Username déjà pris" });
     
-            bdd.query("UPDATE users SET username = ? WHERE id = ?;", [newUsername, req.user.id], (err) => {
+            bdd.query("UPDATE users SET login = ? WHERE id = ?;", [newUsername, req.user.id], (err) => {
                 if (err) return res.status(500).json({ error: err.message });
     
                 const token = jwt.sign(
@@ -130,7 +130,7 @@ app.post('/api/changepassword', verifToken, (req, res) => {
 
     if (!PASSWORD_PATTERN.test(newPassword)) return res.status(400).json({ error: "Nouveau mot de passe invalide" });
 
-    bdd.query("SELECT hashed_password FROM users WHERE id = ?;", [req.user.id], (err, results) => {
+    bdd.query("SELECT password FROM users WHERE id = ?;", [req.user.id], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
 
         bcrypt.compare(oldPassword, results[0].hashed_password, (err, isMatch) => {
@@ -141,7 +141,7 @@ app.post('/api/changepassword', verifToken, (req, res) => {
             bcrypt.hash(newPassword, 10, (err, hashed) => {
                 if (err) return res.status(500).json({ error: err.message });
 
-                bdd.query("UPDATE users SET hashed_password = ? WHERE id = ?;", [hashed, req.user.id], (err) => {
+                bdd.query("UPDATE users SET password = ? WHERE id = ?;", [hashed, req.user.id], (err) => {
                     if (err) return res.status(500).json({ error: err.message }); 
 
                     return res.json({ message: "Mot de passe modifié" });

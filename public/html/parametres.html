@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPHessV2 - Paramètres</title>
+    <link href="../style/style.css" rel="stylesheet">
+</head>
+<body>
+    <h1>GPHessV2</h1>
+    <div style="margin-left: 20px">
+        <h1>Bienvenue <span id="nomUtilisateur"></span></h1>
+        <button id="logoutButton">Déconnexion</button>
+
+        <h2>Changer de nom d'utilisateur</h2>
+        <input type="text" id="newUsername" placeholder="Nouveau nom">
+        <button id="changeUserButton">Changer</button>
+
+        <h2>Changer de mot de passe</h2>
+        <input type="password" id="oldPassword" placeholder="Ancien mot de passe">
+        <input type="password" id="newPassword" placeholder="Nouveau mot de passe">
+        <button id="changePasswordButton">Changer</button>
+
+        <h2>Supprimer le compte</h2>
+        <button id="deleteButton">Supprimer mon compte</button>
+
+        <p id="message"></p>
+        <h2>Liste des utilisateurs</h2>
+        <ul id="listeUtilisateurs"></ul>
+    </div>
+
+    <script src="../script/parametres.js"></script>
+</body>
+</html>

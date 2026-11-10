@@ -3,32 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GPHessV2</title>
+    <title>GPHessV2 - Inscription</title>
     <link href="../style/style.css" rel="stylesheet">
 </head>
-
 <body>
-    <h1>GPhess</h1>
+    <h1>GPHess</h1>
     <div id="center">
         <h2>Inscription</h2>
-        <div>
-            <input id="idInscription" type="text" placeholder="Identifiant">
-        </div>
-        <div>
-            <input id="idPassword" type="password" placeholder="Mot de passe">
-        </div>
-         <div>
-            <input id="confirmation" type="password" placeholder="Confirmer le mot de passe">
-        </div>
-        <button id="buttonInscription">S'inscrire</button> <a href="login">Déjà un compte ?</a>
-        <p id="error"></p>
-    </div>        <ul>
+        <div><input id="identifiant" type="text" placeholder="Identifiant"></div>
+        <div><input id="password" type="password" placeholder="Mot de passe"></div>
+        <div><input id="confirmation" type="password" placeholder="Confirmez le mot de passe"></div>
+        <ul>
             <li>8 caractères</li>
             <li>1 majuscule</li>
             <li>1 minuscule</li>
             <li>1 chiffre</li>
             <li>1 caractère spécial</li>    
         </ul>
+        <button id="submit">S'inscrire</button> <a href="connexion">Déjà un compte ?</a>
+        <div><span id = error></span></div>
+    </div>
 
     <script src="../script/inscription.js"></script>
 </body>

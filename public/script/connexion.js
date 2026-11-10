@@ -15,9 +15,9 @@ bouton.addEventListener('click', () => {
             cookieStore.set("authToken", data.token);
             window.location.href = '/';
         } else {
-            erreur.textContent = data.error;
+            erreur.textContent = data.error; // changer data.error ?
         }
     }).catch(function (err) {
-        console.log(err);
+        console.error(err);
     });
 });

@@ -1,27 +1,23 @@
-const connexionButton = document.getElementById('loginButton');
+const identifiant = document.getElementById('identifiant'); // à changer
+const motdepasse = document.getElementById('password'); // à changer
+const bouton = document.getElementById('submit'); // à changer
+const erreur = document.getElementById('error'); // à changer
 
-if (connexionButton) {
-    connexionButton.addEventListener('click', () => {
-        const loginUsername = document.getElementById('login').value;
-        const loginPassword = document.getElementById('password').value;
-        const errorText = document.getElementById("error");
-
-        fetch('/api/login', {
-            method: 'POST',
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ "username": loginUsername, "password": loginPassword })
-        }).then(function (res) {
-            return res.json();
-        }).then(function (data) {
-            console.log(data);
-            if (data.message === "Connexion réussie") {
-                localStorage.setItem("token", data.token);
-                window.location.href = "/"; // l'index est sur "/", pas "index"
-            } else if (errorText) {
-                errorText.textContent = data.error;
-            }
-        }).catch(function (err) {
-            console.error(err);
-        });
+bouton.addEventListener('click', () => {
+    fetch('/api/login', {
+        method: 'POST',
+        headers: { "Content-Type" : "application/json"},
+        body: JSON.stringify({ "username": identifiant.value, "password": motdepasse.value}) // à changer
+    }).then(function (res) {
+        return res.json();
+    }).then(function(data) {
+        if (data.message == "Connexion réussie") { // modifier pour mettre un code
+            cookieStore.set("authToken", data.token);
+            window.location.href = '/';
+        } else {
+            erreur.textContent = data.error;
+        }
+    }).catch(function (err) {
+        console.log(err);
     });
-}
+});

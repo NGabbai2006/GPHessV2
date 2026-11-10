@@ -38,10 +38,10 @@ app.get('/', (req, res) => {
 	res.sendFile("index.html", { root: path.join(__dirname, "public", "html") });
 });
 app.get('/login', (req, res) => {
-	res.sendFile("login.html", { root: path.join(__dirname, "public", "html") });
+	res.sendFile("connexion.html", { root: path.join(__dirname, "public", "html") });
 });
 app.get('/signup', (req, res) => {
-	res.sendFile("signup.html", { root: path.join(__dirname, "public", "html") });
+	res.sendFile("inscription.html", { root: path.join(__dirname, "public", "html") });
 });
 
 function verifierToken(req, res, next) {
@@ -64,9 +64,9 @@ function verifierToken(req, res, next) {
 app.get('/style/style.css', (req, res) => { res.sendFile("style.css", { root: path.join(__dirname, "public", "style") }); });
 
 app.get('/script/main.js', (req, res) => { res.sendFile("main.js", { root: path.join(__dirname, "public", "script") }); });
-app.get('/script/connexion.js', (req, res) => { res.sendFile("main.js", { root: path.join(__dirname, "public", "script") }); });
-app.get('/script/inscription.js', (req, res) => { res.sendFile("main.js", { root: path.join(__dirname, "public", "script") }); });
-app.get('/script/trames.js', (req, res) => { res.sendFile("main.js", { root: path.join(__dirname, "public", "script") }); });
+app.get('/script/connexion.js', (req, res) => { res.sendFile("connexion.js", { root: path.join(__dirname, "public", "script") }); });
+app.get('/script/inscription.js', (req, res) => { res.sendFile("inscription.js", { root: path.join(__dirname, "public", "script") }); });
+app.get('/script/trames.js', (req, res) => { res.sendFile("trames.js", { root: path.join(__dirname, "public", "script") }); });
 
 
 app.post('/api/inscription', (req, res) => {

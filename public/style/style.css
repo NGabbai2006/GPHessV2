@@ -1,27 +1,31 @@
-    body {
-        background-color:rgb(245, 57, 88);
-    }
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden
+}
 
-    input {
-        margin-bottom: 1em;
-    }
+body {
+    background-color:rgb(245, 57, 88);
+}
 
-    h1{
-        margin-left: 50%;
-    }
+input {
+    margin-bottom: 1em;
+}
 
-    #center {
-        margin-left: 50%;
-    }
+h1{
+    margin-left: 50%;
+}
 
-    button{
-        border: 1em;
-    }
+#center {
+    margin-left: 50%;
+}
 
-    		html, body {
-			height: 100%;
-			margin: 0;
-		}
-		.leaflet-container {
-			height: 100%;
-		}
+button{
+    border: 1em;
+}
+
+#map {
+    height: 800px;
+    margin-left: 50px;
+    margin-right: 50px;
+}

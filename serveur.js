@@ -103,6 +103,10 @@ app.post('/api/connexion', (req, res) => {
     })
 })
 
+app.post('/api/veriftoken', verifToken, (req, res) => {
+    return res.json({ valide: true });
+})
+
 app.post('/api/changeuser', verifToken, (req, res) => {
     const newUsername = req.body.newUsername;
 

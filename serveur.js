@@ -7,6 +7,8 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const serialport = require('serialport');
 const websocket = require('ws');
+const cookieParser = require('cookie-parser');
+
 
 const app = express();
 
@@ -16,6 +18,7 @@ const REGEX_PASSWORD = /^((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\W]).{8,64})$/;
 
 app.use(express.static(__dirname + '/public'));
 app.use(cors());
+app.use(cookieParser());
 app.use(express.json());
 
 const bdd = mysql.createConnection({
@@ -47,8 +50,9 @@ app.get('/script/map.js', (req, res) => { res.sendFile("map.js", { root: path.jo
 app.get('/leaflet/leaflet.css', (req, res) => { res.sendFile("leaflet.css", { root: path.join(__dirname, "public", "leaflet") }); });
 
 function verifToken(req, res, next) {
-    const header = req.headers['authorization'];
-    const token = header && header.split(' ')[1];
+    const header = req.headers['cookie'];
+    if (!header) return res.status(401).json({ erreur: "Token manquant" });
+    const token = header.split("=")[1];
 
     if (!token) return res.status(401).json({ erreur: "Token manquant" });
 
@@ -93,12 +97,18 @@ app.post('/api/connexion', (req, res) => {
             if (!match) return res.status(401).json({ erreur: "Mot de passe incorrect" });
             
             const token = jwt.sign(
-                { id: results[0].id, username: results[0].username },
+                { id: results[0].id, username: results[0].username, admin : results[0].admin},
                 process.env.JWT_SECRET,
                 { expiresIn: '1h' }
             );
-
-            return res.json({ message: "Connexion réussie", token: token });
+            console.log("connexion réussie: " + req.body.username);
+            res.cookie('authToken', token, {
+                httpOnly: true, //empêche le JavaScript d'accéder au cookie, donc protège contre le XSS
+                secure: false, // force le cookie à passer uniquement en HTTPS si true                         !!! attention à mettre true en production !!!
+                sameSite: 'strict', //protège contre les attaques CSRF.
+                maxAge: 30 * 24 * 60 * 60 * 1000
+            })
+            return res.json({ success: true });
         })
     })
 })
@@ -112,7 +122,7 @@ app.post('/api/changeuser', verifToken, (req, res) => {
 
     if (!REGEX_USERNAME.test(newUsername)) return res.status(400).json({ erreur: "Nouveau mot de passe invalide" });
 
-    bdd.query("SELECT id FROM users WHERE login = ?;", [newUsername], (err, results) => {
+    bdd.query("SELECT id,admin FROM users WHERE login = ?;", [newUsername], (err, results) => {
             if (err) return res.status(500).json({ error: err.message });
             if (results.length > 0) return res.status(400).json({ error: "Username déjà pris" });
     
@@ -120,9 +130,9 @@ app.post('/api/changeuser', verifToken, (req, res) => {
                 if (err) return res.status(500).json({ error: err.message });
     
                 const token = jwt.sign(
-                    { id: req.user.id, username: newUsername },
+                    { id: req.user.id, username: newUsername, admin : results[0].admin },
                     process.env.JWT_SECRET,
-                    { expiresIn: '1h' }
+                    { expiresIn: '24h' }
                 );
                 return res.json({ message: "Username modifié", token: token });
             });
@@ -175,6 +185,12 @@ app.get('/api/loadCoords', verifToken, (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Le serveur est en écoute sur le port ${PORT}\nhttp://localhost:${PORT}`);
+});
+
+app.post('/deconnexion', verifToken, (req, res) => {
+  res.clearCookie('authToken');
+  console.log("l'id " + req.user.id + " se déco");
+  res.json({ message: 'Déconnecté' });
 });
 
 //const wss = new WebSocket({ url: "localhost", port: 3001 });

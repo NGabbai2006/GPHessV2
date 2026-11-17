@@ -44,7 +44,7 @@ bouton.addEventListener('click', () => {
         console.log(data);
         console.log(data.token);
         if (data.message == "Account created") { // modifier pour utiliser un code
-            cookieStore.set("authToken", data.token);
+            localStorage.set("authToken", data.token);
             window.location.href = '/';
         } else {
             erreur.textContent = data.error; // changer data.error ?

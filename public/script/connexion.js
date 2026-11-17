@@ -4,15 +4,14 @@ const bouton = document.getElementById('submit'); // à changer
 const erreur = document.getElementById('error'); // à changer
 
 bouton.addEventListener('click', () => {
-    fetch('/api/login', {
+    fetch('/api/connexion', {
         method: 'POST',
         headers: { "Content-Type" : "application/json"},
         body: JSON.stringify({ "username": identifiant.value, "password": motdepasse.value}) // à changer
     }).then(function (res) {
         return res.json();
     }).then(function(data) {
-        if (data.message == "Connexion réussie") { // modifier pour mettre un code
-            cookieStore.set("authToken", data.token);
+        if (data.success == true) { // modifier pour mettre un code
             window.location.replace('/');
         } else {
             erreur.textContent = data.error; // changer data.error ?
@@ -20,4 +19,4 @@ bouton.addEventListener('click', () => {
     }).catch(function (err) {
         console.error(err);
     });
-});
+})

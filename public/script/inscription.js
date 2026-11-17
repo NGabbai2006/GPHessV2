@@ -32,7 +32,7 @@ confirmation.addEventListener("input", () => {
 })
 
 bouton.addEventListener('click', () => {
-    if (!REGEX_USERNAME.test(identifiant)) { erreur.textContent = "Identifiant invalide"; return; } 
+    if (!REGEX_USERNAME.test(identifiant.value)) { erreur.textContent = "Identifiant invalide"; return; } 
 
     fetch("/api/inscription", {
         method: 'POST',
@@ -41,13 +41,15 @@ bouton.addEventListener('click', () => {
     }).then(function (res) {
         return res.json();
     }).then(function (data) {
+        console.log(data);
+        console.log(data.token);
         if (data.message == "Account created") { // modifier pour utiliser un code
             cookieStore.set("authToken", data.token);
             window.location.href = '/';
         } else {
             erreur.textContent = data.error; // changer data.error ?
         }
-    }).catch(function (err) {
-        console.error(err);
+    }).catch(function (erreur) {
+        console.error(erreur);
     });
 });

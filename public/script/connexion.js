@@ -13,7 +13,7 @@ bouton.addEventListener('click', () => {
     }).then(function(data) {
         if (data.message == "Connexion réussie") { // modifier pour mettre un code
             cookieStore.set("authToken", data.token);
-            window.location.href = '/';
+            window.location.replace('/');
         } else {
             erreur.textContent = data.error; // changer data.error ?
         }

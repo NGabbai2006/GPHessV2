@@ -37,7 +37,7 @@ app.get('/parametres', (req, res) => { res.sendFile("parametres.html", { root: p
 
 app.get('/style/style.css', (req, res) => { res.sendFile("style.css", { root: path.join(__dirname, "public", "style") }); });
 
-app.get('/script/main.js', (req, res) => { res.sendFile("main.js", { root: path.join(__dirname, "public", "script") }); });
+app.get('/script/index.js', (req, res) => { res.sendFile("index.js", { root: path.join(__dirname, "public", "script") }); });
 app.get('/script/connexion.js', (req, res) => { res.sendFile("connexion.js", { root: path.join(__dirname, "public", "script") }); });
 app.get('/script/inscription.js', (req, res) => { res.sendFile("inscription.js", { root: path.join(__dirname, "public", "script") }); });
 app.get('/script/trames.js', (req, res) => { res.sendFile("trames.js", { root: path.join(__dirname, "public", "script") }); });
@@ -67,11 +67,11 @@ app.post('/api/inscription', (req, res) => {
     if (!REGEX_USERNAME.test(req.body.username)) return res.json({ "message": "Username invalide" });
     if (!REGEX_PASSWORD.test(req.body.password)) return res.json({ "message": "Mot de passe invalide" });
 
-    bdd.query("SELECT * FROM users WHERE login = ?;", [req.body.username], (err, results => {
+    bdd.query("SELECT * FROM users WHERE login = ?;", [req.body.username], (err, results) => {
         if (err) return res.status(500).json({ erreur: err.message });
         if (results.length > 0) { return res.json({ "message" : "Utilisateur déjà pris" }) };
 
-        bcrypt.hash(req.body.password, process.env.BCRYPT_HASH, (err, password) => {
+        bcrypt.hash(req.body.password, 10, (err, password) => {
             if (err) return res.status(500).json({ erreur: err.message });
             
             bdd.query("INSERT INTO users (login, password) VALUES (?, ?);", [req.body.username, password], (err, results) => {
@@ -80,7 +80,7 @@ app.post('/api/inscription', (req, res) => {
                 return res.json({ "message" : "Compte créé" });
             })
         })
-    }))
+    })
 })
 
 app.post('/api/connexion', (req, res) => {
@@ -162,6 +162,26 @@ app.post('/api/deleteaccount', verifToken, (req, res) => {
 	});
 });
 
+app.get('/api/loadCoords', verifToken, (req, res) => {
+    bdd.query("SELECT date, coordonnee FROM gps", (result, err) => {
+        if (err) return res.json({ "erreur": err});
+
+        for (let i = 0; i < result.length; i++) {
+            res.send(result[i]);
+        }
+        return res.json("test");
+    })
+})
+
 app.listen(PORT, () => {
     console.log(`Le serveur est en écoute sur le port ${PORT}\nhttp://localhost:${PORT}`);
 });
+
+//const wss = new WebSocket({ url: "localhost", port: 3001 });
+//wss.on("connection", (ws) => {
+//    console.log("Nouveau client");
+//
+//    setInterval(() => {
+//        ws.send("test");
+//    }, 10000);
+//});

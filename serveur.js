@@ -48,6 +48,7 @@ app.get('/script/parametres.js', (req, res) => { res.sendFile("parametres.js", {
 app.get('/script/map.js', (req, res) => { res.sendFile("map.js", { root: path.join(__dirname, "public", "script") }); });
 
 app.get('/leaflet/leaflet.css', (req, res) => { res.sendFile("leaflet.css", { root: path.join(__dirname, "public", "leaflet") }); });
+app.get('/terreplate.jpg', (req, res) => { res.sendFile("/terreplate.jpg", { root: path.join(__dirname, "public", "style") }); });
 
 function verifToken(req, res, next) {
     const header = req.headers['cookie'];

@@ -33,6 +33,17 @@ const points = [
 	[5056.4056, 157.8373]
 ];
 
+fetch("/api/loadCoords", {
+        method: 'GET',
+        headers: { "Content-Type": "application/json" },
+    }).then(function (res) {
+        return res.json();
+    }).then(function (data) {
+        console.log(data);
+    }).catch(function (err) {
+        console.error(err);
+    });
+
 for (var i = 0; i < points.length; i++) {
 	points[i][0] /= 100;
 	points[i][1] /= 100;

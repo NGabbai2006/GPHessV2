@@ -188,7 +188,7 @@ app.listen(PORT, () => {
     console.log(`Le serveur est en écoute sur le port ${PORT}\nhttp://localhost:${PORT}`);
 });
 
-app.post('/deconnexion', verifToken, (req, res) => {
+app.post('/api/deconnexion', verifToken, (req, res) => {
   res.clearCookie('authToken');
   console.log("l'id " + req.user.id + " se déco");
   res.json({ message: 'Déconnecté' });

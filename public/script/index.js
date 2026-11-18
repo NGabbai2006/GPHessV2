@@ -1,6 +1,6 @@
-async function verifToken() {
+function verifToken() {
     try {
-        await fetch("/api/veriftoken", {
+        fetch("/api/veriftoken", {
             method: "POST",
             headers: { "Content-Type": "application/json" }
         }).then(function (res) {
@@ -11,7 +11,7 @@ async function verifToken() {
                     method: "POST",
                     headers: { "Content-Type": "application/json" }
                 })
-                return window.location.replace("/connexion")
+                return console.log("test");
             } 
         }).catch(function (err) {
             console.error(err);

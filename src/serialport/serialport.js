@@ -1,7 +1,7 @@
 const { SerialPort } = require('serialport');
 
 //$GPGGA,084548,5022.5107,N,00160.3967,E,1,08,0.9,545.4,M,46.9,M, , *42
-export function serialport(port, bdd) {
+module.exports = (port, bdd) => {
     const serial = new SerialPort({
         path: port,
         baudRate: 9600

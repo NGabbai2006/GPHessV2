@@ -1,8 +1,12 @@
-import { bdd } from './src/expresso/bdd';
+// Modules
+const app = require('./src/expresso/express');
+const bdd = require('./src/expresso/bdd');
 
-bdd.connect((err) => {
-	if (err) { console.error(err); return; }
-	console.log("Connecté à la BDD");
-}); 
+// Constantes
+const PORT = 8080;
 
-require('./src/serialport/serialport')("COM10", bdd)
+// BDD
+require('./src/serialport/serialport')("COM10", bdd);
+
+// Serveur Express
+app.listen(PORT, () => { console.log(`Le serveur est en écoute sur le port ${PORT}\nhttp://localhost:${PORT}`); });

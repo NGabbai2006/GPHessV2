@@ -9,7 +9,7 @@ async function verifToken() {
             if (!data.valide) { // modifier pour mettre un code
                 fetch("/api/deconnexion", {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" }
+                    headers: { "Con²pe": "application/json" }
                 })
                 return window.location.replace("/connexion")
             } 

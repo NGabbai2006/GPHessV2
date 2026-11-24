@@ -5,7 +5,7 @@ module.exports = (port, bdd) => {
     const serial = new SerialPort({
         path: port,
         baudRate: 9600
-    }, (err) => { return console.log(err) });
+    });
 
     serial.on('open', () => {
         serial.on('data', (data) => {

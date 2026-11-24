@@ -1,4 +1,4 @@
-const inscription = () => {
+const inscription = (app) => {
     app.post('/api/inscription', (req, res) => {
         if (!REGEX_USERNAME.test(req.body.username)) return res.json({ "message": "Username invalide" });
         if (!REGEX_PASSWORD.test(req.body.password)) return res.json({ "message": "Mot de passe invalide" });
@@ -18,6 +18,7 @@ const inscription = () => {
             })
         })
     })
+    return app;
 }
 
 module.exports = { inscription };

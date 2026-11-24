@@ -9,8 +9,9 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 
-//app = require('./loadfichier')(app);
 const { loadFichiers } = require('./loadfichier');
+const { loadApis } = require('./loadapis');
 app = loadFichiers(app);
+app = loadApis(app);
 
 module.exports = app;

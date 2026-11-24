@@ -1,25 +1,34 @@
-app.post('/api/changepassword', verifToken, (req, res) => {
-    const { oldPassword, newPassword } = req.body;
+const bdd = require('../bdd');
+const bcrypt = require('bcrypt');
 
-    if (!PASSWORD_PATTERN.test(newPassword)) return res.status(400).json({ error: "Nouveau mot de passe invalide" });
+const changePassword = (app) => {
+    app.post('/api/changepassword', verifToken, (req, res) => {
+        const { oldPassword, newPassword } = req.body;
 
-    bdd.query("SELECT password FROM users WHERE id = ?;", [req.user.id], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
+        if (!PASSWORD_PATTERN.test(newPassword)) return res.status(400).json({ error: "Nouveau mot de passe invalide" });
 
-        bcrypt.compare(oldPassword, results[0].hashed_password, (err, isMatch) => {
+        bdd.query("SELECT password FROM users WHERE id = ?;", [req.user.id], (err, results) => {
             if (err) return res.status(500).json({ error: err.message });
 
-            if (!isMatch) return res.status(401).json({ error: "Ancien mot de passe incorrect" });
-
-            bcrypt.hash(newPassword, 10, (err, hashed) => {
+            bcrypt.compare(oldPassword, results[0].hashed_password, (err, isMatch) => {
                 if (err) return res.status(500).json({ error: err.message });
 
-                bdd.query("UPDATE users SET password = ? WHERE id = ?;", [hashed, req.user.id], (err) => {
-                    if (err) return res.status(500).json({ error: err.message }); 
+                if (!isMatch) return res.status(401).json({ error: "Ancien mot de passe incorrect" });
 
-                    return res.json({ message: "Mot de passe modifié" });
+                bcrypt.hash(newPassword, 10, (err, hashed) => {
+                    if (err) return res.status(500).json({ error: err.message });
+
+                    bdd.query("UPDATE users SET password = ? WHERE id = ?;", [hashed, req.user.id], (err) => {
+                        if (err) return res.status(500).json({ error: err.message }); 
+
+                        return res.json({ message: "Mot de passe modifié" });
+                    });
                 });
             });
         });
     });
-});
+    return app;
+};
+
+module.exports = { changePassword };
+

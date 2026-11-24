@@ -6,12 +6,12 @@ function verifToken() {
         }).then(function (res) {
             return res.json();
         }).then(function(data) {
-            if (!data.valide) { // modifier pour mettre un code
+            if (!data.valide) {
                 fetch("/api/deconnexion", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" }
                 })
-                return console.log("test");
+                return;
             } 
         }).catch(function (err) {
             console.error(err);

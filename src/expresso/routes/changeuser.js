@@ -1,4 +1,8 @@
-app.post('/api/changeuser', verifToken, (req, res) => {
+const bdd = require('../bdd');
+require('dotenv').config();
+
+const changeUser = (app) => {
+    app.post('/api/changeuser', verifToken, (req, res) => {
     const newUsername = req.body.newUsername;
 
     if (!REGEX_USERNAME.test(newUsername)) return res.status(400).json({ erreur: "Nouveau mot de passe invalide" });
@@ -18,4 +22,8 @@ app.post('/api/changeuser', verifToken, (req, res) => {
                 return res.json({ message: "Username modifié", token: token });
             });
         });
-}) 
+    })
+    return app; 
+}
+
+module.exports = { changeUser };

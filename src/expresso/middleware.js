@@ -1,4 +1,6 @@
-module.exports = function verifToken(req, res, next) {
+const jwt = require('jsonwebtoken');
+
+function verifToken(req, res, next) {
     const header = req.headers['cookie'];
     if (!header) return res.status(401).json({ erreur: "Header manquant" });
     const token = header.split("=")[1];
@@ -11,3 +13,5 @@ module.exports = function verifToken(req, res, next) {
         next();
     });
 }
+
+module.exports = {verifToken};

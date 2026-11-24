@@ -5,7 +5,7 @@ const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-const serialport = require('serialport');
+const SerialPort = require('serialport');
 const websocket = require('ws');
 const cookieParser = require('cookie-parser');
 
@@ -98,7 +98,7 @@ app.post('/api/connexion', (req, res) => {
             if (!match) return res.status(401).json({ erreur: "Mot de passe incorrect" });
             
             const token = jwt.sign(
-                { id: results[0].id, username: results[0].username, admin : results[0].admin},
+                { id: results[0].id, username: results[0].login, admin : results[0].admin},
                 process.env.JWT_SECRET,
                 { expiresIn: '1h' }
             );
@@ -173,6 +173,24 @@ app.post('/api/deleteaccount', verifToken, (req, res) => {
 	});
 });
 
+const serial = new SerialPort.SerialPort('COM1', {
+  baudRate: 9600,
+  path: 'COM10',
+  autoOpen: true
+});
+
+//$GPGGA,084548,5022.5107,N,00160.3967,E,1,08,0.9,545.4,M,46.9,M, , *42
+serial.on('open', function() {
+    serial.on('data', function(data) {
+        console.log(data);
+        const dataArray = data.split(',');
+        bdd.query("INSERT INTO gps (coordonnee) VALUES ST_PointFromText('POINT(? ?)',0);", [dataArray[2]/100, dataArray[4]/100], (result, err) => {
+            if (err) return cnsole.log(err);
+            return console.log("coordonnées insérées");
+        })
+    })
+})
+
 app.get('/api/loadCoords', verifToken, (req, res) => {
     bdd.query("SELECT date, coordonnee FROM gps", (result, err) => {
         if (err) return res.json({ "erreur": err});
@@ -180,19 +198,20 @@ app.get('/api/loadCoords', verifToken, (req, res) => {
         for (let i = 0; i < result.length; i++) {
             res.send(result[i]);
         }
-        return res.json("test");
+        return res.json({ "date": result.data, "coordonnee": result.coordonee });
     })
 })
-
-app.listen(PORT, () => {
-    console.log(`Le serveur est en écoute sur le port ${PORT}\nhttp://localhost:${PORT}`);
-});
 
 app.post('/api/deconnexion', verifToken, (req, res) => {
   res.clearCookie('authToken');
   console.log("l'id " + req.user.id + " se déco");
   res.json({ message: 'Déconnecté' });
 });
+
+app.listen(PORT, () => {
+    console.log(`Le serveur est en écoute sur le port ${PORT}\nhttp://localhost:${PORT}`);
+});
+
 
 //const wss = new WebSocket({ url: "localhost", port: 3001 });
 //wss.on("connection", (ws) => {

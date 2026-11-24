@@ -5,7 +5,7 @@ const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-const SerialPort = require('serialport');
+const { SerialPort } = require('serialport');
 const websocket = require('ws');
 const cookieParser = require('cookie-parser');
 
@@ -173,23 +173,38 @@ app.post('/api/deleteaccount', verifToken, (req, res) => {
 	});
 });
 
-const serial = new SerialPort.SerialPort('COM1', {
-  baudRate: 9600,
-  path: 'COM10',
-  autoOpen: true
+const serial = new SerialPort({
+    path: "COM10",
+    baudRate: 9600
 });
 
 //$GPGGA,084548,5022.5107,N,00160.3967,E,1,08,0.9,545.4,M,46.9,M, , *42
 serial.on('open', function() {
     serial.on('data', function(data) {
-        console.log(data);
-        const dataArray = data.split(',');
-        bdd.query("INSERT INTO gps (coordonnee) VALUES ST_PointFromText('POINT(? ?)',0);", [dataArray[2]/100, dataArray[4]/100], (result, err) => {
-            if (err) return cnsole.log(err);
+        console.log(data.toString());
+        const dataArray = data.toString().split(',');
+        const dataA = dataArray[4]/100
+        const dataD = dataArray[2]/100+dataArray[3] + "," + (dataArray[4]/100).toString().substring(0, 7)+dataArray[5];
+        console.log(dataD);
+        bdd.query("INSERT INTO gps (timestamp, coordonnee) VALUES (NOW(), ?);", [dataD], (result, err) => {
+            if (err) return console.log(err);
+            console.log(result);
             return console.log("coordonnées insérées");
         })
     })
-})
+});
+
+serial.on('open', () => {
+    serial.on('data', (data) => {
+        const dataSplitted = data.split(',');
+        const value = dataSplitted[2]/100 + dataSplitted[3] + ',' + (dataSplitted[4]/100).toString().substring(0,7) + dataSplitted[5];
+        bdd.query("INSERT INTO gps (timestamp, coordonee) VALUES (NOW(), ?);", [value], (result, err) => {
+            if (err) return console.log(err);
+
+            return console.log("Nouvelle coordonnéee " + value);
+        });
+    });
+});
 
 app.get('/api/loadCoords', verifToken, (req, res) => {
     bdd.query("SELECT date, coordonnee FROM gps", (result, err) => {

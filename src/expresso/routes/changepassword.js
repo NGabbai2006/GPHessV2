@@ -31,4 +31,3 @@ const changePassword = (app) => {
 };
 
 module.exports = { changePassword };
-

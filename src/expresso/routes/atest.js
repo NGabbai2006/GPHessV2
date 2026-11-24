@@ -6,5 +6,3 @@ const test = (app) => {
 }
 
 module.exports = { test };
-
-
